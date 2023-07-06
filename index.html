@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time Duration Calculator</title>
+    <script>
+        function calculateTotal() {
+            var arrivalTime = document.getElementById("arrivalTime").value;
+            var departureTime = document.getElementById("departureTime").value;
+            var rate = document.getElementById("rate").value;
+            var tripFee = document.getElementById("tripFee").value;
+            var pickupFee = document.getElementById("pickupFee").value;
+            var lunchBreakCheckbox = document.getElementById("lunchBreakCheckbox");
+            
+            var arrival = arrivalTime.split(":");
+            var departure = departureTime.split(":");
+            
+            var arrivalHours = parseInt(arrival[0]);
+            var arrivalMinutes = parseInt(arrival[1]);
+            
+            var departureHours = parseInt(departure[0]);
+            var departureMinutes = parseInt(departure[1]);
+            
+            var totalMinutes = (departureHours * 60 + departureMinutes) - (arrivalHours * 60 + arrivalMinutes);
+            
+            if (lunchBreakCheckbox.checked) {
+                totalMinutes -= 15;
+            }
+            
+            var decimalDuration = totalMinutes / 60;
+            
+            var totalAmount = (decimalDuration * parseFloat(rate)) + parseFloat(tripFee) + parseFloat(pickupFee);
+            
+            document.getElementById("duration").innerHTML = "Duration: " + decimalDuration.toFixed(2) + " hours";
+            document.getElementById("totalAmount").innerHTML = "Total Amount: $" + totalAmount.toFixed(2);
+        }
+        
+        function handleTripFeeChange() {
+            var tripFee = document.getElementById("tripFee");
+            var tripFeeValue = parseFloat(tripFee.value);
+            var tripFeeLabel = document.getElementById("tripFeeLabel");
+            
+            if (tripFeeValue === 0) {
+                tripFeeLabel.innerHTML = "Trip Fee: $0";
+            } else {
+                tripFeeLabel.innerHTML = "Trip Fee: $" + tripFeeValue.toFixed(2);
+            }
+        }
+        
+        function handlePickupFeeChange() {
+            var pickupFee = document.getElementById("pickupFee");
+            var pickupFeeValue = parseFloat(pickupFee.value);
+            var pickupFeeLabel = document.getElementById("pickupFeeLabel");
+            
+            if (pickupFeeValue === 0) {
+                pickupFeeLabel.innerHTML = "Pickup Fee: $0";
+            } else {
+                pickupFeeLabel.innerHTML = "Pickup Fee: $" + pickupFeeValue.toFixed(2);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Time Duration Calculator</h1>
+    <label for="arrivalTime">Arrival Time:</label>
+    <input type="time" id="arrivalTime">
+    <br><br>
+    <label for="departureTime">Departure Time:</label>
+    <input type="time" id="departureTime">
+    <br><br>
+    <label for="rate">Rate:</label>
+    <select id="rate">
+        <option value="105">Rate 1: $105 per hour</option>
+        <option value="185">Rate 2: $185 per hour</option>
+        <option value="275">Rate 3: $275 per hour</option>
+    </select>
+    <br><br>
+    <label id="tripFeeLabel" for="tripFee">Trip Fee:</label>
+    <select id="tripFee" onchange="handleTripFeeChange()">
+        <option value="0">None: $0</option>
+        <option value="85">Trip Fee 1: $85</option>
+        <option value="95">Trip Fee 2: $95</option>
+        <option value="105">Trip Fee 3: $105</option>
+        <option value="125">Trip Fee 4: $125</option>
+        <option value="150">Trip Fee 5: $150</option>
+    </select>
+    <br><br>
+    <label id="pickupFeeLabel" for="pickupFee">Pickup Fee:</label>
+    <select id="pickupFee" onchange="handlePickupFeeChange()">
+        <option value="0">None: $0</option>
+        <option value="35">Pickup Fee 1: $35</option>
+        <option value="50">Pickup Fee 2: $50</option>
+        <option value="75">Pickup Fee 3: $75</option>
+    </select>
+    <br><br>
+    <label for="lunchBreakCheckbox">Lunch Break (15 minutes):</label>
+    <input type="checkbox" id="lunchBreakCheckbox">
+    <br><br>
+    <button onclick="calculateTotal()">Calculate</button>
+    <br><br>
+    <p id="duration"></p>
+    <p id="totalAmount"></p>
+</body>
+</html>
